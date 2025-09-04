@@ -8,6 +8,8 @@ require_once 'controllers/Controller.php';
 require_once 'models/AccountModel.php';
 require_once 'models/InteractionModel.php';
 require_once 'models/TypificationModel.php';
+require_once 'models/ContactChannelModel.php';
+require_once 'models/ObligationModel.php';
 
 class AdvisorController extends Controller {
     
@@ -50,24 +52,103 @@ class AdvisorController extends Controller {
         $typificationModel = new TypificationModel();
         
         $accounts = $accountModel->getAccountsByAdvisor($this->user['id']);
-        $typifications = $typificationModel->getAll();
+        
+        // Obtener categorías de acción (nivel 1) - solo las activas para asesor
+        $action_categories = $typificationModel->getActionCategories();
+        
+        // Obtener todas las tipificaciones para el JavaScript
+        $typifications_data = $typificationModel->getAllForHierarchy();
+        
+        // Obtener canales autorizados
+        $authorized_channels = $typificationModel->getAuthorizedChannels();
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->validateCSRF();
             
+            // Obtener datos del formulario
+            $account_id = $this->getPost('account_id');
+            $action_category = $this->getPost('action_category');
+            $contact_typification = $this->getPost('contact_typification');
+            $profile_typification = $this->getPost('profile_typification');
+            $notes = $this->getPost('notes');
+            $phone_number = $this->getPost('phone_number');
+            $scheduled_date = $this->getPost('scheduled_date');
+            $authorized_channels = $this->getPost('authorized_channels', []);
+            $obligation_frame = $this->getPost('obligation_frame');
+            
+            // Obtener datos de obligaciones
+            $obligation_accounts = $this->getPost('obligation_account', []);
+            $obligation_payment_dates = $this->getPost('obligation_payment_date', []);
+            $obligation_total_installments = $this->getPost('obligation_total_installments', []);
+            $obligation_total_values = $this->getPost('obligation_total_value', []);
+            $obligation_installment_numbers = $this->getPost('obligation_installment_number', []);
+            $obligation_installment_values = $this->getPost('obligation_installment_value', []);
+            
+            // Validaciones básicas
+            if (empty($account_id) || empty($action_category) || 
+                empty($contact_typification) || empty($profile_typification) || empty($notes)) {
+                $this->redirectWithMessage('advisor/new-interaction', 'error', 'Todos los campos obligatorios son requeridos');
+                return;
+            }
+            
+            // Validar que las observaciones tengan contenido mínimo
+            if (strlen(trim($notes)) < 10) {
+                $this->redirectWithMessage('advisor/new-interaction', 'error', 'Las observaciones deben tener al menos 10 caracteres para ser descriptivas');
+                return;
+            }
+            
+            // Preparar datos para la interacción
             $data = [
-                'account_id' => $this->getPost('account_id'),
+                'account_id' => $account_id,
                 'advisor_id' => $this->user['id'],
-                'typification_id' => $this->getPost('typification_id'),
-                'notes' => $this->getPost('notes'),
-                'promise_amount' => $this->getPost('promise_amount') ?: null,
-                'promise_due_date' => $this->getPost('promise_due_date') ?: null,
-                'next_contact_at' => $this->getPost('next_contact_at') ?: null,
-                'contacted' => $this->getPost('contacted') ? 1 : 0
+                'channel_id' => 1, // Usar canal por defecto
+                'action_category_id' => $action_category,
+                'contact_typification_id' => $contact_typification,
+                'profile_typification_id' => $profile_typification,
+                'notes' => $notes,
+                'phone_number' => $phone_number,
+                'scheduled_date' => $scheduled_date,
+                'authorized_channels_data' => json_encode($authorized_channels),
+                'obligation_frame_data' => $obligation_frame,
+                'promise_amount' => null,
+                'promise_due_date' => null,
+                'next_contact_at' => null,
+                'contacted' => 0
             ];
             
             $interactionModel = new InteractionModel();
-            if ($interactionModel->create($data)) {
+            $interactionId = $interactionModel->createWithHierarchy($data);
+            
+            if ($interactionId) {
+                // Procesar obligaciones si existen
+                if (!empty($obligation_accounts) && is_array($obligation_accounts)) {
+                    $obligationModel = new ObligationModel();
+                    
+                    for ($i = 0; $i < count($obligation_accounts); $i++) {
+                        // Validar que todos los campos de la obligación estén presentes
+                        if (!empty($obligation_accounts[$i]) && 
+                            !empty($obligation_payment_dates[$i]) && 
+                            !empty($obligation_total_installments[$i]) && 
+                            !empty($obligation_total_values[$i]) && 
+                            !empty($obligation_installment_numbers[$i]) && 
+                            !empty($obligation_installment_values[$i])) {
+                            
+                            $obligationData = [
+                                'interaction_id' => $interactionId,
+                                'account_id' => $obligation_accounts[$i],
+                                'payment_date' => $obligation_payment_dates[$i],
+                                'total_installments' => $obligation_total_installments[$i],
+                                'total_agreement_value' => $this->cleanCurrencyValue($obligation_total_values[$i]),
+                                'installment_number' => $obligation_installment_numbers[$i],
+                                'installment_value' => $this->cleanCurrencyValue($obligation_installment_values[$i]),
+                                'status' => 'pending'
+                            ];
+                            
+                            $obligationModel->create($obligationData);
+                        }
+                    }
+                }
+                
                 $this->redirectWithMessage('advisor/my-interactions', 'success', 'Interacción registrada exitosamente');
             } else {
                 $this->redirectWithMessage('advisor/new-interaction', 'error', 'Error al registrar la interacción');
@@ -77,7 +158,9 @@ class AdvisorController extends Controller {
         $this->render('advisor/new-interaction', [
             'title' => 'Nueva Interacción',
             'accounts' => $accounts,
-            'typifications' => $typifications
+            'action_categories' => $action_categories,
+            'typifications_data' => $typifications_data,
+            'authorized_channels' => $authorized_channels
         ]);
     }
     
@@ -166,6 +249,15 @@ class AdvisorController extends Controller {
         
         fclose($output);
         exit;
+    }
+    
+    /**
+     * Limpiar valor de moneda removiendo separadores de miles
+     */
+    private function cleanCurrencyValue($value) {
+        // Remover separadores de miles y convertir a float
+        $cleanValue = str_replace(',', '', $value);
+        return (float) $cleanValue;
     }
 }
 ?>

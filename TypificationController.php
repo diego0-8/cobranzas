@@ -29,10 +29,13 @@ class TypificationController extends Controller {
         $title = 'Gestión de Tipificaciones';
         $user = $this->user;
         
-        // Obtener tipificaciones
-        $typifications = $this->typificationModel->getAll();
+        // Obtener tipificaciones con conteo de uso
+        $typifications = $this->typificationModel->getWithUsageCount();
         
-        $this->render('typifications/index', compact('title', 'user', 'typifications'));
+        // Obtener categorías para el modal de creación
+        $categories = $this->typificationModel->getCategories();
+        
+        $this->render('typifications/index', compact('title', 'user', 'typifications', 'categories'));
     }
     
     /**
@@ -46,13 +49,14 @@ class TypificationController extends Controller {
         }
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $this->getPost('name');
-            $description = $this->getPost('description');
-            $category = $this->getPost('category');
-            $sortOrder = $this->getPost('sort_order', 0);
+            $this->validateCSRF();
             
-            if (empty($name)) {
-                $this->redirectWithMessage('typifications', 'El nombre de la tipificación es requerido', 'error');
+            $name = $this->getPost('name');
+            $code = $this->getPost('code');
+            $category_id = $this->getPost('category_id');
+            
+            if (empty($name) || empty($code) || empty($category_id)) {
+                $this->redirectWithMessage('typifications', 'Todos los campos son requeridos', 'error');
                 return;
             }
             
@@ -61,11 +65,16 @@ class TypificationController extends Controller {
                 return;
             }
             
+            // Verificar si el código ya existe
+            if ($this->typificationModel->codeExists($code)) {
+                $this->redirectWithMessage('typifications', 'Ya existe una tipificación con ese código', 'error');
+                return;
+            }
+            
             $data = [
                 'name' => $name,
-                'description' => $description,
-                'category' => $category,
-                'sort_order' => $sortOrder
+                'code' => $code,
+                'category_id' => $category_id
             ];
             
             if ($this->typificationModel->create($data)) {
@@ -76,7 +85,8 @@ class TypificationController extends Controller {
         } else {
             $title = 'Crear Tipificación';
             $user = $this->user;
-            $this->render('typifications/create', compact('title', 'user'));
+            $categories = $this->typificationModel->getCategories();
+            $this->render('typifications/create', compact('title', 'user', 'categories'));
         }
     }
     
@@ -91,14 +101,15 @@ class TypificationController extends Controller {
         }
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->validateCSRF();
+            
             $id = $this->getPost('id');
             $name = $this->getPost('name');
-            $description = $this->getPost('description');
-            $category = $this->getPost('category');
-            $sortOrder = $this->getPost('sort_order', 0);
+            $code = $this->getPost('code');
+            $category_id = $this->getPost('category_id');
             
-            if (empty($id) || empty($name)) {
-                $this->redirectWithMessage('typifications', 'Datos requeridos faltantes', 'error');
+            if (empty($id) || empty($name) || empty($code) || empty($category_id)) {
+                $this->redirectWithMessage('typifications', 'Todos los campos son requeridos', 'error');
                 return;
             }
             
@@ -107,11 +118,16 @@ class TypificationController extends Controller {
                 return;
             }
             
+            // Verificar si el código ya existe (excluyendo el actual)
+            if ($this->typificationModel->codeExists($code, $id)) {
+                $this->redirectWithMessage('typifications', 'Ya existe una tipificación con ese código', 'error');
+                return;
+            }
+            
             $data = [
                 'name' => $name,
-                'description' => $description,
-                'category' => $category,
-                'sort_order' => $sortOrder
+                'code' => $code,
+                'category_id' => $category_id
             ];
             
             if ($this->typificationModel->update($id, $data)) {
@@ -134,7 +150,8 @@ class TypificationController extends Controller {
             
             $title = 'Editar Tipificación';
             $user = $this->user;
-            $this->render('typifications/update', compact('title', 'user', 'typification'));
+            $categories = $this->typificationModel->getCategories();
+            $this->render('typifications/update', compact('title', 'user', 'typification', 'categories'));
         }
     }
     

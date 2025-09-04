@@ -368,27 +368,7 @@
                 </div>
             </div>
             
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-shield-alt me-2"></i>Permisos Asesor
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Gestionar mis cuentas asignadas</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Registrar interacciones</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Crear promesas de pago</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Usar tipificaciones</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Ver mis reportes</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Registrar pagos recibidos</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Ver mi rendimiento</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Gestionar mi perfil</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 

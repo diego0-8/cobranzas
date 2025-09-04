@@ -109,7 +109,7 @@
                             <input type="hidden" name="csrf_token" value="<?= generateCSRFToken() ?>">
                             
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="account_id" class="form-label">Cuenta <span class="text-danger">*</span></label>
                                     <select class="form-select" id="account_id" name="account_id" required>
                                         <option value="">Selecciona una cuenta</option>
@@ -122,57 +122,208 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label for="typification_id" class="form-label">Tipificación <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="typification_id" name="typification_id" required>
-                                        <option value="">Selecciona una tipificación</option>
-                                        <?php foreach ($typifications as $typification): ?>
-                                            <option value="<?= $typification['id'] ?>">
-                                                <?= htmlspecialchars($typification['name']) ?>
+                            <!-- Sistema de Tipificaciones Jerárquicas -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-sitemap me-2"></i>Sistema de Tipificaciones
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Nivel 1: Acción -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="action_category" class="form-label">Acción <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="action_category" name="action_category" required>
+                                                <option value="">Selecciona una acción</option>
+                                                <?php foreach ($action_categories as $category): ?>
+                                                    <option value="<?= $category['id'] ?>" data-level="<?= $category['level'] ?>">
+                                                        <?= htmlspecialchars($category['name']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                        
+                                        <!-- Nivel 2: Contacto -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="contact_typification" class="form-label">Contacto <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="contact_typification" name="contact_typification" required disabled>
+                                                <option value="">Primero selecciona una acción</option>
+                                            </select>
                             </div>
                             
-                            <div class="mb-3">
-                                <label for="notes" class="form-label">Notas de la Interacción <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="notes" name="notes" rows="4" 
-                                          placeholder="Describe los detalles de la interacción..." required></textarea>
+                                        <!-- Nivel 3: Perfil -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="profile_typification" class="form-label">Perfil <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="profile_typification" name="profile_typification" required disabled>
+                                                <option value="">Primero selecciona un contacto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
+                            <!-- Campos Dinámicos -->
+                            <div class="card mb-4" id="dynamic-fields" style="display: none;">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-cogs me-2"></i>Información Adicional
+                                    </h6>
+                                </div>
+                                <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="contacted" name="contacted" value="1">
-                                        <label class="form-check-label" for="contacted">
-                                            <i class="fas fa-phone me-1"></i>Logré contactar al deudor
-                                        </label>
+                                        <!-- Teléfono -->
+                                        <div class="col-md-6 mb-3" id="phone-field" style="display: none;">
+                                            <label for="phone_number" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="phone_number" name="phone_number" 
+                                                   placeholder="Número de teléfono">
+                            </div>
+                            
+                                        <!-- Fecha Agendada -->
+                                        <div class="col-md-6 mb-3" id="date-field" style="display: none;">
+                                            <label for="scheduled_date" class="form-label">Fecha Agendada</label>
+                                            <input type="datetime-local" class="form-control" id="scheduled_date" name="scheduled_date">
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label for="next_contact_at" class="form-label">Próximo Contacto</label>
-                                    <input type="datetime-local" class="form-control" id="next_contact_at" name="next_contact_at">
+                                    <!-- Canales Autorizados -->
+                                    <div class="mb-3" id="channels-field" style="display: none;">
+                                        <label class="form-label">Canales Autorizados</label>
+                            <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Canales Disponibles:</label>
+                                                <select class="form-select" id="available_channels" multiple size="4">
+                                                    <?php foreach ($authorized_channels as $channel): ?>
+                                                        <option value="<?= $channel['id'] ?>"><?= htmlspecialchars($channel['name']) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Canales Seleccionados:</label>
+                                                <select class="form-select" id="selected_channels" name="authorized_channels[]" multiple size="4">
+                                                </select>
+                                                <div class="mt-2">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" id="add-channel">
+                                                        <i class="fas fa-arrow-right"></i> Agregar
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" id="remove-channel">
+                                                        <i class="fas fa-arrow-left"></i> Quitar
+                                                    </button>
+                                                </div>
+                                            </div>
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="promise_amount" class="form-label">Monto de Promesa de Pago</label>
-                                    <div class="input-group">
+                                    <!-- Marco de Obligación -->
+                                    <div class="mb-3" id="obligation-field" style="display: none;">
+                                        <label for="obligation_frame" class="form-label">Marco de Obligación</label>
+                                        <textarea class="form-control" id="obligation_frame" name="obligation_frame" 
+                                                  rows="3" placeholder="Detalles del marco de obligación..."></textarea>
+                                    </div>
+                                    
+                                    <!-- Cuadro de Obligación -->
+                                    <div class="mb-3" id="obligation-quadro-field" style="display: none;">
+                                        <div class="card border-primary">
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                <h6 class="mb-0">
+                                                    <i class="fas fa-dollar-sign me-2"></i>Obligación
+                                                </h6>
+                                                <button type="button" class="btn btn-sm btn-light" id="add-obligation">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="obligations-container">
+                                                    <!-- Las obligaciones se agregarán dinámicamente aquí -->
+                                                </div>
+                                                
+                                                <!-- Template para nueva obligación -->
+                                                <div class="obligation-template" style="display: none;">
+                                                    <div class="obligation-item border rounded p-3 mb-3">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-3">
+                                                                <label class="form-label small">Cuenta</label>
+                                                                <select class="form-select form-select-sm" name="obligation_account[]" required>
+                                                                    <option value="">Seleccione</option>
+                                                                    <!-- Se llenará dinámicamente -->
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label small">Fecha Pago</label>
+                                                                <input type="date" class="form-control form-control-sm" name="obligation_payment_date[]" required>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label class="form-label small">Cuotas</label>
+                                                                <input type="number" class="form-control form-control-sm" name="obligation_total_installments[]" min="1" required>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label class="form-label small">Valor Total Acuerdo</label>
+                                                                <div class="input-group input-group-sm">
                                         <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="promise_amount" name="promise_amount" 
-                                               step="0.01" min="0" placeholder="0.00">
+                                                                    <input type="text" class="form-control obligation-total-value" name="obligation_total_value[]" placeholder="0" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <label class="form-label small">Número Cuota</label>
+                                                                <input type="number" class="form-control form-control-sm" name="obligation_installment_number[]" min="1" required>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <label class="form-label small">Valor Cuota</label>
+                                                                <div class="input-group input-group-sm">
+                                        <span class="input-group-text">$</span>
+                                                                    <input type="text" class="form-control obligation-installment-value" name="obligation_installment_value[]" placeholder="0" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <div class="col-12 text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-danger remove-obligation">
+                                                                    <i class="fas fa-trash"></i> Eliminar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                </div>
+                            </div>
+                            
+                                                <!-- Botones de acción -->
+                                                <div class="row mt-3">
+                                                    <div class="col-12 text-end">
+                                                        <button type="button" class="btn btn-success me-2" id="obligation-buzon">
+                                                            <i class="fas fa-play"></i> Buzón
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary me-2" id="obligation-cancel">
+                                                            <i class="fas fa-times"></i> Cancelar
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" id="obligation-save">
+                                                            <i class="fas fa-save"></i> Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label for="promise_due_date" class="form-label">Fecha de Promesa</label>
-                                    <input type="date" class="form-control" id="promise_due_date" name="promise_due_date">
+                            <!-- Campo de Observaciones - Siempre visible -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-comment-alt me-2"></i>Observaciones de la Interacción
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Notas y Observaciones <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="notes" name="notes" rows="4"
+                                        placeholder="Describe los detalles de la interacción, observaciones importantes, acuerdos alcanzados, próximos pasos, etc..." required></textarea>                                        
+                                    </div>
                                 </div>
                             </div>
+                            
+                            
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a href="<?= baseUrl('advisor/my-interactions') ?>" class="btn btn-secondary me-md-2">
@@ -223,24 +374,294 @@
     
     <script>
         $(document).ready(function() {
-            // Habilitar/deshabilitar campos de promesa según el checkbox
-            $('#contacted').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#promise_amount, #promise_due_date').prop('disabled', false);
-                } else {
-                    $('#promise_amount, #promise_due_date').prop('disabled', true).val('');
+            // Variables globales para almacenar datos
+            let typificationsData = <?= json_encode($typifications_data) ?>;
+            let authorizedChannels = <?= json_encode($authorized_channels) ?>;
+            
+            // Manejar cambio en Acción (Nivel 1)
+            $('#action_category').change(function() {
+                const actionId = $(this).val();
+                const contactSelect = $('#contact_typification');
+                const profileSelect = $('#profile_typification');
+                
+                // Limpiar opciones
+                contactSelect.html('<option value="">Selecciona un contacto</option>').prop('disabled', true);
+                profileSelect.html('<option value="">Primero selecciona un contacto</option>').prop('disabled', true);
+                
+                if (actionId) {
+                    // Filtrar tipificaciones de nivel 2 para esta acción
+                    const contactOptions = typificationsData.filter(t => 
+                        t.category_id == actionId && t.level == 2
+                    );
+                    
+                    contactOptions.forEach(option => {
+                        contactSelect.append(`<option value="${option.id}">${option.name}</option>`);
+                    });
+                    
+                    contactSelect.prop('disabled', false);
                 }
+                
+                // Ocultar campos dinámicos
+                $('#dynamic-fields').hide();
+            });
+            
+            // Manejar cambio en Contacto (Nivel 2)
+            $('#contact_typification').change(function() {
+                const contactId = $(this).val();
+                const actionId = $('#action_category').val();
+                const profileSelect = $('#profile_typification');
+                
+                // Limpiar opciones
+                profileSelect.html('<option value="">Selecciona un perfil</option>').prop('disabled', true);
+                
+                if (contactId && actionId) {
+                    // Filtrar tipificaciones de nivel 3 para este contacto
+                    const profileOptions = typificationsData.filter(t => 
+                        t.parent_id == contactId && t.level == 3
+                    );
+                    
+                    if (profileOptions.length > 0) {
+                        profileOptions.forEach(option => {
+                            profileSelect.append(`<option value="${option.id}" 
+                                data-requires-phone="${option.requires_phone}" 
+                                data-requires-date="${option.requires_date}" 
+                                data-requires-channels="${option.requires_authorized_channels}" 
+                                data-requires-obligation="${option.requires_obligation_frame}">${option.name}</option>`);
+                        });
+                    } else {
+                        // Si no hay opciones de nivel 3, usar la tipificación de nivel 2
+                        const contactTypification = typificationsData.find(t => t.id == contactId);
+                        if (contactTypification) {
+                            profileSelect.append(`<option value="${contactTypification.id}" 
+                                data-requires-phone="${contactTypification.requires_phone}" 
+                                data-requires-date="${contactTypification.requires_date}" 
+                                data-requires-channels="${contactTypification.requires_authorized_channels}" 
+                                data-requires-obligation="${contactTypification.requires_obligation_frame}">${contactTypification.name}</option>`);
+                        }
+                    }
+                    
+                    profileSelect.prop('disabled', false);
+                }
+            });
+            
+            // Manejar cambio en Perfil (Nivel 3)
+            $('#profile_typification').change(function() {
+                const selectedOption = $(this).find('option:selected');
+                const requiresPhone = selectedOption.data('requires-phone') == 1;
+                const requiresDate = selectedOption.data('requires-date') == 1;
+                const requiresChannels = selectedOption.data('requires-channels') == 1;
+                const requiresObligation = selectedOption.data('requires-obligation') == 1;
+                
+                // Mostrar/ocultar campos dinámicos
+                if (requiresPhone || requiresDate || requiresChannels || requiresObligation) {
+                    $('#dynamic-fields').show();
+                    
+                    // Teléfono
+                    if (requiresPhone) {
+                        $('#phone-field').show();
+                        $('#phone_number').prop('required', true);
+                    } else {
+                        $('#phone-field').hide();
+                        $('#phone_number').prop('required', false);
+                    }
+                    
+                    // Fecha
+                    if (requiresDate) {
+                        $('#date-field').show();
+                        $('#scheduled_date').prop('required', true);
+                    } else {
+                        $('#date-field').hide();
+                        $('#scheduled_date').prop('required', false);
+                    }
+                    
+                    // Canales autorizados
+                    if (requiresChannels) {
+                        $('#channels-field').show();
+                    } else {
+                        $('#channels-field').hide();
+                    }
+                    
+                    // Marco de obligación
+                    if (requiresObligation) {
+                        $('#obligation-field').show();
+                        $('#obligation-quadro-field').show();
+                        $('#obligation_frame').prop('required', true);
+                    } else {
+                        $('#obligation-field').hide();
+                        $('#obligation-quadro-field').hide();
+                        $('#obligation_frame').prop('required', false);
+                    }
+                } else {
+                    $('#dynamic-fields').hide();
+                }
+            });
+            
+            // Manejar canales autorizados
+            $('#add-channel').click(function() {
+                const selected = $('#available_channels option:selected');
+                selected.each(function() {
+                    const option = $(this);
+                    const value = option.val();
+                    const text = option.text();
+                    
+                    // Verificar si ya existe
+                    if ($('#selected_channels option[value="' + value + '"]').length == 0) {
+                        $('#selected_channels').append(`<option value="${value}">${text}</option>`);
+                    }
+                });
+            });
+            
+            $('#remove-channel').click(function() {
+                $('#selected_channels option:selected').remove();
+            });
+            
+            // Funcionalidad del formulario de obligaciones
+            let obligationCounter = 0;
+            let accountsData = <?= json_encode($accounts) ?>;
+            
+            // Agregar nueva obligación
+            $('#add-obligation').click(function() {
+                const template = $('.obligation-template').html();
+                const newObligation = $(template);
+                
+                // Llenar opciones de cuentas
+                const accountSelect = newObligation.find('select[name="obligation_account[]"]');
+                accountsData.forEach(account => {
+                    accountSelect.append(`<option value="${account.id}">Cuenta #${account.id}</option>`);
+                });
+                
+                // Asignar ID único
+                obligationCounter++;
+                newObligation.find('input, select').each(function() {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace('[]', '[' + obligationCounter + ']'));
+                    }
+                });
+                
+                $('#obligations-container').append(newObligation);
+            });
+            
+            // Eliminar obligación
+            $(document).on('click', '.remove-obligation', function() {
+                $(this).closest('.obligation-item').remove();
+            });
+            
+            // Botones de acción de obligaciones
+            $('#obligation-buzon').click(function() {
+                alert('Funcionalidad de Buzón - Próximamente disponible');
+            });
+            
+            $('#obligation-cancel').click(function() {
+                $('#obligations-container').empty();
+                obligationCounter = 0;
+            });
+            
+            $('#obligation-save').click(function() {
+                const obligations = [];
+                $('.obligation-item').each(function() {
+                    const obligation = {
+                        account_id: $(this).find('select[name*="obligation_account"]').val(),
+                        payment_date: $(this).find('input[name*="obligation_payment_date"]').val(),
+                        total_installments: $(this).find('input[name*="obligation_total_installments"]').val(),
+                        total_agreement_value: parseCurrency($(this).find('input[name*="obligation_total_value"]').val()),
+                        installment_number: $(this).find('input[name*="obligation_installment_number"]').val(),
+                        installment_value: parseCurrency($(this).find('input[name*="obligation_installment_value"]').val())
+                    };
+                    
+                    // Validar que todos los campos estén llenos
+                    if (Object.values(obligation).every(val => val && val.trim() !== '')) {
+                        obligations.push(obligation);
+                    }
+                });
+                
+                if (obligations.length === 0) {
+                    alert('Debe agregar al menos una obligación válida');
+                    return;
+                }
+                
+                // Aquí se enviarían las obligaciones al servidor
+                console.log('Obligaciones a guardar:', obligations);
+                alert(`Se guardarán ${obligations.length} obligación(es)`);
+            });
+            
+            // Funciones para formateo de pesos colombianos
+            function formatCurrency(value) {
+                // Remover todo excepto números
+                const numericValue = value.replace(/[^\d]/g, '');
+                if (numericValue === '') return '';
+                
+                // Convertir a número y formatear con separadores de miles
+                const number = parseInt(numericValue);
+                return number.toLocaleString('es-CO');
+            }
+            
+            function parseCurrency(value) {
+                // Remover separadores de miles y devolver solo el número
+                return value.replace(/[^\d]/g, '');
+            }
+            
+            // Formateo automático de campos de moneda
+            $(document).on('input', '.obligation-total-value', function() {
+                const formatted = formatCurrency($(this).val());
+                $(this).val(formatted);
+            });
+            
+            $(document).on('input', '.obligation-installment-value', function() {
+                const formatted = formatCurrency($(this).val());
+                $(this).val(formatted);
             });
             
             // Validación del formulario
             $('form').submit(function(e) {
-                var accountId = $('#account_id').val();
-                var typificationId = $('#typification_id').val();
-                var notes = $('#notes').val().trim();
+                const accountId = $('#account_id').val();
+                const actionCategory = $('#action_category').val();
+                const contactTypification = $('#contact_typification').val();
+                const profileTypification = $('#profile_typification').val();
+                const notes = $('#notes').val().trim();
                 
-                if (!accountId || !typificationId || !notes) {
+                // Validación básica - campos obligatorios
+                if (!accountId || !actionCategory || !contactTypification || !profileTypification || !notes) {
                     e.preventDefault();
-                    alert('Por favor completa todos los campos obligatorios.');
+                    alert('Por favor completa todos los campos obligatorios:\n' +
+                          '• Cuenta\n' +
+                          '• Acción\n' +
+                          '• Contacto\n' +
+                          '• Perfil\n' +
+                          '• Observaciones');
+                    return false;
+                }
+                
+                // Validar que las observaciones tengan contenido mínimo
+                if (notes.length < 10) {
+                    e.preventDefault();
+                    alert('Las observaciones deben tener al menos 10 caracteres para ser descriptivas.');
+                    return false;
+                }
+                
+                // Validar campos dinámicos requeridos
+                const selectedProfile = $('#profile_typification option:selected');
+                if (selectedProfile.data('requires-phone') == 1 && !$('#phone_number').val().trim()) {
+                    e.preventDefault();
+                    alert('El teléfono es requerido para esta tipificación.');
+                    return false;
+                }
+                
+                if (selectedProfile.data('requires-date') == 1 && !$('#scheduled_date').val()) {
+                    e.preventDefault();
+                    alert('La fecha agendada es requerida para esta tipificación.');
+                    return false;
+                }
+                
+                if (selectedProfile.data('requires-channels') == 1 && $('#selected_channels option').length == 0) {
+                    e.preventDefault();
+                    alert('Debe seleccionar al menos un canal autorizado.');
+                    return false;
+                }
+                
+                if (selectedProfile.data('requires-obligation') == 1 && !$('#obligation_frame').val().trim()) {
+                    e.preventDefault();
+                    alert('El marco de obligación es requerido para esta tipificación.');
                     return false;
                 }
             });

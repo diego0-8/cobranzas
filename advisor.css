@@ -151,6 +151,14 @@
     background-color: #f8f9fc;
 }
 
+/* Custom column widths for obligation form */
+@media (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 19%;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .container-fluid {
