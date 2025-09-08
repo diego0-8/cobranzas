@@ -1,0 +1,833 @@
+/* ========================================
+   SISTEMA DE GRID PERSONALIZADO
+   Basado en Bootstrap 5.3.0
+   ======================================== */
+
+/* Variables CSS para el sistema de grid */
+:root {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    --bs-columns: 12;
+    --bs-gutter-x-sm: 1rem;
+    --bs-gutter-x-md: 1.5rem;
+    --bs-gutter-x-lg: 2rem;
+    --bs-gutter-x-xl: 2.5rem;
+    --bs-gutter-x-xxl: 3rem;
+}
+
+/* Contenedor base */
+.container,
+.container-fluid {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container {
+    max-width: 1320px;
+}
+
+/* Row base */
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-0.5 * var(--bs-gutter-x));
+    margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: var(--bs-gutter-y);
+}
+
+/* Columnas base */
+.col {
+    flex: 1 0 0%;
+}
+
+/* Columnas específicas - Extra Small (xs) - 0px+ */
+.col-1 { flex: 0 0 auto; width: 8.33333333%; }
+.col-2 { flex: 0 0 auto; width: 16.66666667%; }
+.col-3 { flex: 0 0 auto; width: 25%; }
+.col-4 { flex: 0 0 auto; width: 33.33333333%; }
+.col-5 { flex: 0 0 auto; width: 41.66666667%; }
+.col-6 { flex: 0 0 auto; width: 50%; }
+.col-7 { flex: 0 0 auto; width: 58.33333333%; }
+.col-8 { flex: 0 0 auto; width: 66.66666667%; }
+.col-9 { flex: 0 0 auto; width: 75%; }
+.col-10 { flex: 0 0 auto; width: 83.33333333%; }
+.col-11 { flex: 0 0 auto; width: 91.66666667%; }
+.col-12 { flex: 0 0 auto; width: 100%; }
+
+/* Auto columns */
+.col-auto { flex: 0 0 auto; width: auto; }
+
+/* Small (sm) - 576px+ */
+@media (min-width: 576px) {
+    .col-sm { flex: 1 0 0%; }
+    .col-sm-auto { flex: 0 0 auto; width: auto; }
+    .col-sm-1 { flex: 0 0 auto; width: 8.33333333%; }
+    .col-sm-2 { flex: 0 0 auto; width: 16.66666667%; }
+    .col-sm-3 { flex: 0 0 auto; width: 25%; }
+    .col-sm-4 { flex: 0 0 auto; width: 33.33333333%; }
+    .col-sm-5 { flex: 0 0 auto; width: 41.66666667%; }
+    .col-sm-6 { flex: 0 0 auto; width: 50%; }
+    .col-sm-7 { flex: 0 0 auto; width: 58.33333333%; }
+    .col-sm-8 { flex: 0 0 auto; width: 66.66666667%; }
+    .col-sm-9 { flex: 0 0 auto; width: 75%; }
+    .col-sm-10 { flex: 0 0 auto; width: 83.33333333%; }
+    .col-sm-11 { flex: 0 0 auto; width: 91.66666667%; }
+    .col-sm-12 { flex: 0 0 auto; width: 100%; }
+}
+
+/* Medium (md) - 768px+ */
+@media (min-width: 768px) {
+    .col-md { flex: 1 0 0% !important; }
+    .col-md-auto { flex: 0 0 auto !important; width: auto !important; }
+    .col-md-1 { flex: 0 0 auto !important; width: 8.33333333% !important; }
+    .col-md-2 { flex: 0 0 auto !important; width: 16.66666667% !important; }
+    .col-md-3 { flex: 0 0 auto !important; width: 25% !important; }
+    .col-md-4 { flex: 0 0 auto !important; width: 33.33333333% !important; }
+    .col-md-5 { flex: 0 0 auto !important; width: 41.66666667% !important; }
+    .col-md-6 { flex: 0 0 auto !important; width: 50% !important; }
+    .col-md-7 { flex: 0 0 auto !important; width: 58.33333333% !important; }
+    .col-md-8 { flex: 0 0 auto !important; width: 66.66666667% !important; }
+    .col-md-9 { flex: 0 0 auto !important; width: 75% !important; }
+    .col-md-10 { flex: 0 0 auto !important; width: 83.33333333% !important; }
+    .col-md-11 { flex: 0 0 auto !important; width: 91.66666667% !important; }
+    .col-md-12 { flex: 0 0 auto !important; width: 100% !important; }
+}
+
+/* ========================================
+   ESTILOS CON MAYOR ESPECIFICIDAD
+   Para sobrescribir Bootstrap CDN
+   ======================================== */
+
+/* Estilos específicos para el formulario de obligaciones */
+.obligation-form-container .col-md-1,
+.obligation-form-container .col-md-2,
+.obligation-form-container .col-md-3,
+.obligation-form-container .col-md-4,
+.obligation-form-container .col-md-5,
+.obligation-form-container .col-md-6,
+.obligation-form-container .col-md-7,
+.obligation-form-container .col-md-8,
+.obligation-form-container .col-md-9,
+.obligation-form-container .col-md-10,
+.obligation-form-container .col-md-11,
+.obligation-form-container .col-md-12 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+}
+
+.obligation-form-container .col-md-1 { width: 8.33333333% !important; }
+.obligation-form-container .col-md-2 { width: 16.66666667% !important; }
+.obligation-form-container .col-md-3 { width: 25% !important; }
+.obligation-form-container .col-md-4 { width: 33.33333333% !important; }
+.obligation-form-container .col-md-5 { width: 41.66666667% !important; }
+.obligation-form-container .col-md-6 { width: 50% !important; }
+.obligation-form-container .col-md-7 { width: 58.33333333% !important; }
+.obligation-form-container .col-md-8 { width: 66.66666667% !important; }
+.obligation-form-container .col-md-9 { width: 75% !important; }
+.obligation-form-container .col-md-10 { width: 83.33333333% !important; }
+.obligation-form-container .col-md-11 { width: 91.66666667% !important; }
+.obligation-form-container .col-md-12 { width: 100% !important; }
+
+/* Estilos para el cuadro de obligaciones específico */
+#obligation-quadro-field .col-md-1,
+#obligation-quadro-field .col-md-2,
+#obligation-quadro-field .col-md-3,
+#obligation-quadro-field .col-md-4,
+#obligation-quadro-field .col-md-5,
+#obligation-quadro-field .col-md-6,
+#obligation-quadro-field .col-md-7,
+#obligation-quadro-field .col-md-8,
+#obligation-quadro-field .col-md-9,
+#obligation-quadro-field .col-md-10,
+#obligation-quadro-field .col-md-11,
+#obligation-quadro-field .col-md-12 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+}
+
+#obligation-quadro-field .col-md-1 { width: 8.33333333% !important; }
+#obligation-quadro-field .col-md-2 { width: 16.66666667% !important; }
+#obligation-quadro-field .col-md-3 { width: 25% !important; }
+#obligation-quadro-field .col-md-4 { width: 33.33333333% !important; }
+#obligation-quadro-field .col-md-5 { width: 41.66666667% !important; }
+#obligation-quadro-field .col-md-6 { width: 50% !important; }
+#obligation-quadro-field .col-md-7 { width: 58.33333333% !important; }
+#obligation-quadro-field .col-md-8 { width: 66.66666667% !important; }
+#obligation-quadro-field .col-md-9 { width: 75% !important; }
+#obligation-quadro-field .col-md-10 { width: 83.33333333% !important; }
+#obligation-quadro-field .col-md-11 { width: 91.66666667% !important; }
+#obligation-quadro-field .col-md-12 { width: 100% !important; }
+
+/* ========================================
+   ESTILOS CON MÁXIMA ESPECIFICIDAD
+   Para garantizar que se apliquen sobre Bootstrap CDN
+   ======================================== */
+
+/* Estilos específicos para XXL con máxima especificidad */
+body .col-xxl-1,
+html body .col-xxl-1,
+.container .col-xxl-1,
+.row .col-xxl-1 {
+    flex: 0 0 auto !important;
+    width: 14.333333% !important;
+}
+
+/* Estilos específicos para el formulario de obligaciones */
+.obligation-form-container .col-xxl-1,
+.obligation-form-container .col-xxl-2,
+.obligation-form-container .col-xxl-3,
+.obligation-form-container .col-xxl-4,
+.obligation-form-container .col-xxl-5,
+.obligation-form-container .col-xxl-6,
+.obligation-form-container .col-xxl-7,
+.obligation-form-container .col-xxl-8,
+.obligation-form-container .col-xxl-9,
+.obligation-form-container .col-xxl-10,
+.obligation-form-container .col-xxl-11,
+.obligation-form-container .col-xxl-12 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+}
+
+.obligation-form-container .col-xxl-1 { width: 14.333333% !important; }
+.obligation-form-container .col-xxl-2 { width: 16.66666667% !important; }
+.obligation-form-container .col-xxl-3 { width: 25% !important; }
+.obligation-form-container .col-xxl-4 { width: 33.33333333% !important; }
+.obligation-form-container .col-xxl-5 { width: 41.66666667% !important; }
+.obligation-form-container .col-xxl-6 { width: 50% !important; }
+.obligation-form-container .col-xxl-7 { width: 58.33333333% !important; }
+.obligation-form-container .col-xxl-8 { width: 66.66666667% !important; }
+.obligation-form-container .col-xxl-9 { width: 75% !important; }
+.obligation-form-container .col-xxl-10 { width: 83.33333333% !important; }
+.obligation-form-container .col-xxl-11 { width: 91.66666667% !important; }
+.obligation-form-container .col-xxl-12 { width: 100% !important; }
+
+/* Estilos para el cuadro de obligaciones específico */
+#obligation-quadro-field .col-xxl-1,
+#obligation-quadro-field .col-xxl-2,
+#obligation-quadro-field .col-xxl-3,
+#obligation-quadro-field .col-xxl-4,
+#obligation-quadro-field .col-xxl-5,
+#obligation-quadro-field .col-xxl-6,
+#obligation-quadro-field .col-xxl-7,
+#obligation-quadro-field .col-xxl-8,
+#obligation-quadro-field .col-xxl-9,
+#obligation-quadro-field .col-xxl-10,
+#obligation-quadro-field .col-xxl-11,
+#obligation-quadro-field .col-xxl-12 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+}
+
+#obligation-quadro-field .col-xxl-1 { width: 14.333333% !important; }
+#obligation-quadro-field .col-xxl-2 { width: 16.66666667% !important; }
+#obligation-quadro-field .col-xxl-3 { width: 25% !important; }
+#obligation-quadro-field .col-xxl-4 { width: 33.33333333% !important; }
+#obligation-quadro-field .col-xxl-5 { width: 41.66666667% !important; }
+#obligation-quadro-field .col-xxl-6 { width: 50% !important; }
+#obligation-quadro-field .col-xxl-7 { width: 58.33333333% !important; }
+#obligation-quadro-field .col-xxl-8 { width: 66.66666667% !important; }
+#obligation-quadro-field .col-xxl-9 { width: 75% !important; }
+#obligation-quadro-field .col-xxl-10 { width: 83.33333333% !important; }
+#obligation-quadro-field .col-xxl-11 { width: 91.66666667% !important; }
+#obligation-quadro-field .col-xxl-12 { width: 100% !important; }
+
+/* ========================================
+   SOBRESCRIBIR BOOTSTRAP CDN COMPLETAMENTE
+   Para el cuadro de obligaciones específico
+   ======================================== */
+
+/* Resetear completamente los estilos de Bootstrap para el cuadro de obligaciones */
+#obligation-quadro-field * {
+    box-sizing: border-box !important;
+}
+
+#obligation-quadro-field .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-right: -0.75rem !important;
+    margin-left: -0.75rem !important;
+}
+
+#obligation-quadro-field .row > * {
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-right: 0.75rem !important;
+    padding-left: 0.75rem !important;
+    margin-top: 0 !important;
+}
+
+/* Columnas específicas para el cuadro de obligaciones */
+#obligation-quadro-field .col-md-1 { 
+    flex: 0 0 auto !important; 
+    width: 14.33333333% !important; 
+}
+
+#obligation-quadro-field .col-md-2 { 
+    flex: 0 0 auto !important; 
+    width: 11.66666667% !important; 
+}
+
+#obligation-quadro-field .col-md-3 { 
+    flex: 0 0 auto !important; 
+    width: 20% !important; 
+}
+
+#obligation-quadro-field .col-md-4 { 
+    flex: 0 0 auto !important; 
+    width: 33.33333333% !important; 
+}
+
+#obligation-quadro-field .col-md-5 { 
+    flex: 0 0 auto !important; 
+    width: 41.66666667% !important; 
+}
+
+#obligation-quadro-field .col-md-6 { 
+    flex: 0 0 auto !important; 
+    width: 50% !important; 
+}
+
+#obligation-quadro-field .col-md-7 { 
+    flex: 0 0 auto !important; 
+    width: 58.33333333% !important; 
+}
+
+#obligation-quadro-field .col-md-8 { 
+    flex: 0 0 auto !important; 
+    width: 66.66666667% !important; 
+}
+
+#obligation-quadro-field .col-md-9 { 
+    flex: 0 0 auto !important; 
+    width: 75% !important; 
+}
+
+#obligation-quadro-field .col-md-10 { 
+    flex: 0 0 auto !important; 
+    width: 83.33333333% !important; 
+}
+
+#obligation-quadro-field .col-md-11 { 
+    flex: 0 0 auto !important; 
+    width: 91.66666667% !important; 
+}
+
+#obligation-quadro-field .col-md-12 { 
+    flex: 0 0 auto !important; 
+    width: 100% !important; 
+}
+
+/* Estilos personalizados para el cuadro de obligaciones */
+#obligation-quadro-field .obligation-item {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.375rem !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+#obligation-quadro-field .form-label {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+#obligation-quadro-field .form-control,
+#obligation-quadro-field .form-select {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+#obligation-quadro-field .form-control:focus,
+#obligation-quadro-field .form-select:focus {
+    color: #495057 !important;
+    background-color: #fff !important;
+    border-color: #86b7fe !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+#obligation-quadro-field .form-control-sm,
+#obligation-quadro-field .form-select-sm {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 0.25rem !important;
+}
+
+/* Input groups específicos para el cuadro de obligaciones */
+#obligation-quadro-field .input-group {
+    position: relative !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+#obligation-quadro-field .input-group > .form-control {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    width: 1% !important;
+    min-width: 0 !important;
+}
+
+#obligation-quadro-field .input-group-text {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background-color: #e9ecef !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+}
+
+#obligation-quadro-field .input-group > .form-control:not(:last-child) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+#obligation-quadro-field .input-group > .input-group-text:not(:first-child) {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+#obligation-quadro-field .input-group-sm > .form-control,
+#obligation-quadro-field .input-group-sm > .form-select,
+#obligation-quadro-field .input-group-sm > .input-group-text {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 0.25rem !important;
+}
+
+/* ========================================
+   CLASES ESPECÍFICAS PARA CADA SECCIÓN
+   Del cuadro de obligaciones
+   ======================================== */
+
+/* Clase base para todos los campos */
+#obligation-quadro-field .obligation-field {
+    padding: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Sección Cuenta - Más ancha para mostrar números largos */
+#obligation-quadro-field .obligation-field-account {
+    flex: 0 0 auto !important;
+    width: 20% !important; 
+}
+
+#obligation-quadro-field .obligation-field-account .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+#obligation-quadro-field .obligation-field-account .form-select {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Sección Fecha Pago - Ancho medio */
+#obligation-quadro-field .obligation-field-date {
+    flex: 0 0 auto !important;
+    width: 18% !important; 
+}
+
+#obligation-quadro-field .obligation-field-date .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+#obligation-quadro-field .obligation-field-date .form-control {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Sección Cuotas - Ancho pequeño */
+#obligation-quadro-field .obligation-field-installments {
+    flex: 0 0 auto !important;
+    width: 9% !important; 
+}
+
+#obligation-quadro-field .obligation-field-installments .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+#obligation-quadro-field .obligation-field-installments .form-control {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.5rem !important;
+    text-align: center !important;
+}
+
+/* Sección Valor Total - Ancho medio */
+#obligation-quadro-field .obligation-field-total {
+    flex: 0 0 auto !important;
+    width: 21% !important; /* Reducido de 16.67% a 21% */
+}
+
+#obligation-quadro-field .obligation-field-total .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+#obligation-quadro-field .obligation-field-total .input-group {
+    margin-bottom: 0 !important;
+}
+
+#obligation-quadro-field .obligation-field-total .input-group-text {
+    background-color: #e9ecef !important;
+    border-color: #ced4da !important;
+    font-weight: 600 !important;
+}
+
+/* Sección Número Cuota - Muy pequeño */
+#obligation-quadro-field .obligation-field-number {
+    flex: 0 0 auto !important;
+    width: 16% !important; /* Reducido de 8.33% a 10% */
+}
+
+#obligation-quadro-field .obligation-field-number .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+    font-size: 0.75rem !important;
+}
+
+#obligation-quadro-field .obligation-field-number .form-control {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.3rem !important;
+    text-align: center !important;
+}
+
+/* Sección Valor Cuota - Muy pequeño */
+#obligation-quadro-field .obligation-field-value {
+    flex: 0 0 auto !important;
+    width: 15% !important; /* Reducido de 8.33% a 10% */
+}
+
+#obligation-quadro-field .obligation-field-value .form-label {
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.25rem !important;
+    font-size: 0.75rem !important;
+}
+
+#obligation-quadro-field .obligation-field-value .input-group {
+    margin-bottom: 0 !important;
+}
+
+#obligation-quadro-field .obligation-field-value .input-group-text {
+    background-color: #e9ecef !important;
+    border-color: #ced4da !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    padding: 0.4rem 0.3rem !important;
+}
+
+#obligation-quadro-field .obligation-field-value .form-control {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.3rem !important;
+    text-align: center !important;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 767.98px) {
+    #obligation-quadro-field .obligation-field-account,
+    #obligation-quadro-field .obligation-field-date,
+    #obligation-quadro-field .obligation-field-installments,
+    #obligation-quadro-field .obligation-field-total,
+    #obligation-quadro-field .obligation-field-number,
+    #obligation-quadro-field .obligation-field-value {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Estilos adicionales para mejor apariencia */
+#obligation-quadro-field .obligation-field .form-label {
+    display: block !important;
+    margin-bottom: 0.25rem !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#obligation-quadro-field .obligation-field .form-control:focus,
+#obligation-quadro-field .obligation-field .form-select:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+/* Animación suave para los campos */
+#obligation-quadro-field .obligation-field {
+    transition: all 0.3s ease !important;
+}
+
+#obligation-quadro-field .obligation-field:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Large (lg) - 992px+ */
+@media (min-width: 992px) {
+    .col-lg { flex: 1 0 0%; }
+    .col-lg-auto { flex: 0 0 auto; width: auto; }
+    .col-lg-1 { flex: 0 0 auto; width: 8.33333333%; }
+    .col-lg-2 { flex: 0 0 auto; width: 16.66666667%; }
+    .col-lg-3 { flex: 0 0 auto; width: 25%; }
+    .col-lg-4 { flex: 0 0 auto; width: 33.33333333%; }
+    .col-lg-5 { flex: 0 0 auto; width: 41.66666667%; }
+    .col-lg-6 { flex: 0 0 auto; width: 50%; }
+    .col-lg-7 { flex: 0 0 auto; width: 58.33333333%; }
+    .col-lg-8 { flex: 0 0 auto; width: 66.66666667%; }
+    .col-lg-9 { flex: 0 0 auto; width: 75%; }
+    .col-lg-10 { flex: 0 0 auto; width: 83.33333333%; }
+    .col-lg-11 { flex: 0 0 auto; width: 91.66666667%; }
+    .col-lg-12 { flex: 0 0 auto; width: 100%; }
+}
+
+/* Extra Large (xl) - 1200px+ */
+@media (min-width: 1200px) {
+    .col-xl { flex: 1 0 0%; }
+    .col-xl-auto { flex: 0 0 auto; width: auto; }
+    .col-xl-1 { flex: 0 0 auto; width: 8.33333333%; }
+    .col-xl-2 { flex: 0 0 auto; width: 16.66666667%; }
+    .col-xl-3 { flex: 0 0 auto; width: 25%; }
+    .col-xl-4 { flex: 0 0 auto; width: 33.33333333%; }
+    .col-xl-5 { flex: 0 0 auto; width: 41.66666667%; }
+    .col-xl-6 { flex: 0 0 auto; width: 50%; }
+    .col-xl-7 { flex: 0 0 auto; width: 58.33333333%; }
+    .col-xl-8 { flex: 0 0 auto; width: 66.66666667%; }
+    .col-xl-9 { flex: 0 0 auto; width: 75%; }
+    .col-xl-10 { flex: 0 0 auto; width: 83.33333333%; }
+    .col-xl-11 { flex: 0 0 auto; width: 91.66666667%; }
+    .col-xl-12 { flex: 0 0 auto; width: 100%; }
+}
+
+/* Extra Extra Large (xxl) - 1400px+ */
+@media (min-width: 1400px) {
+    .col-xxl { flex: 1 0 0%; }
+    .col-xxl-auto { flex: 0 0 auto; width: auto; }
+    .col-xxl-1 { flex: 0 0 auto; width: 14.333333%; }
+    .col-xxl-2 { flex: 0 0 auto; width: 16.66666667%; }
+    .col-xxl-3 { flex: 0 0 auto; width: 25%; }
+    .col-xxl-4 { flex: 0 0 auto; width: 33.33333333%; }
+    .col-xxl-5 { flex: 0 0 auto; width: 41.66666667%; }
+    .col-xxl-6 { flex: 0 0 auto; width: 50%; }
+    .col-xxl-7 { flex: 0 0 auto; width: 58.33333333%; }
+    .col-xxl-8 { flex: 0 0 auto; width: 66.66666667%; }
+    .col-xxl-9 { flex: 0 0 auto; width: 75%; }
+    .col-xxl-10 { flex: 0 0 auto; width: 83.33333333%; }
+    .col-xxl-11 { flex: 0 0 auto; width: 91.66666667%; }
+    .col-xxl-12 { flex: 0 0 auto; width: 100%; }
+}
+
+/* ========================================
+   PERSONALIZACIONES ADICIONALES
+   ======================================== */
+
+/* Espaciado personalizado */
+.g-0 { --bs-gutter-x: 0; --bs-gutter-y: 0; }
+.g-1 { --bs-gutter-x: 0.25rem; --bs-gutter-y: 0.25rem; }
+.g-2 { --bs-gutter-x: 0.5rem; --bs-gutter-y: 0.5rem; }
+.g-3 { --bs-gutter-x: 1rem; --bs-gutter-y: 1rem; }
+.g-4 { --bs-gutter-x: 1.5rem; --bs-gutter-y: 1.5rem; }
+.g-5 { --bs-gutter-x: 3rem; --bs-gutter-y: 3rem; }
+
+/* Alineación de columnas */
+.align-items-start { align-items: flex-start !important; }
+.align-items-end { align-items: flex-end !important; }
+.align-items-center { align-items: center !important; }
+.align-items-baseline { align-items: baseline !important; }
+.align-items-stretch { align-items: stretch !important; }
+
+/* Justificación de contenido */
+.justify-content-start { justify-content: flex-start !important; }
+.justify-content-end { justify-content: flex-end !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.justify-content-around { justify-content: space-around !important; }
+.justify-content-evenly { justify-content: space-evenly !important; }
+
+/* Orden de columnas */
+.order-first { order: -1 !important; }
+.order-0 { order: 0 !important; }
+.order-1 { order: 1 !important; }
+.order-2 { order: 2 !important; }
+.order-3 { order: 3 !important; }
+.order-4 { order: 4 !important; }
+.order-5 { order: 5 !important; }
+.order-last { order: 6 !important; }
+
+/* Offset de columnas */
+.offset-1 { margin-left: 8.33333333%; }
+.offset-2 { margin-left: 16.66666667%; }
+.offset-3 { margin-left: 25%; }
+.offset-4 { margin-left: 33.33333333%; }
+.offset-5 { margin-left: 41.66666667%; }
+.offset-6 { margin-left: 50%; }
+.offset-7 { margin-left: 58.33333333%; }
+.offset-8 { margin-left: 66.66666667%; }
+.offset-9 { margin-left: 75%; }
+.offset-10 { margin-left: 83.33333333%; }
+.offset-11 { margin-left: 91.66666667%; }
+
+/* ========================================
+   PERSONALIZACIONES ESPECÍFICAS DEL PROYECTO
+   ======================================== */
+
+/* Ajustes para el formulario de obligaciones */
+.obligation-grid .col-md-1 {
+    flex: 0 0 auto;
+    width: 14.333333%;
+}
+
+.obligation-grid .col-md-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+}
+
+.obligation-grid .col-md-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+/* Ajustes para el dashboard */
+.dashboard-grid .col-xl-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+.dashboard-grid .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+/* Ajustes para formularios */
+.form-grid .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+}
+
+.form-grid .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+.form-grid .col-md-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+/* Ajustes para móviles */
+@media (max-width: 767.98px) {
+    .col-md-1,
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6,
+    .col-md-7,
+    .col-md-8,
+    .col-md-9,
+    .col-md-10,
+    .col-md-11,
+    .col-md-12 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
+
+/* Ajustes para tablets */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .col-lg-1,
+    .col-lg-2,
+    .col-lg-3,
+    .col-lg-4,
+    .col-lg-5,
+    .col-lg-6,
+    .col-lg-7,
+    .col-lg-8,
+    .col-lg-9,
+    .col-lg-10,
+    .col-lg-11,
+    .col-lg-12 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
+/* ========================================
+   UTILIDADES ADICIONALES
+   ======================================== */
+
+/* Visibilidad */
+.d-none { display: none !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+
+/* Flex utilities */
+.flex-row { flex-direction: row !important; }
+.flex-column { flex-direction: column !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-nowrap { flex-wrap: nowrap !important; }
+
+/* Spacing utilities */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 0.25rem !important; }
+.m-2 { margin: 0.5rem !important; }
+.m-3 { margin: 1rem !important; }
+.m-4 { margin: 1.5rem !important; }
+.m-5 { margin: 3rem !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }

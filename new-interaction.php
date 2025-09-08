@@ -11,6 +11,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- CSS personalizado -->
+    <link rel="stylesheet" href="<?= baseUrl('assets/css/bootstrap-grid-custom.css') ?>">
+    <link rel="stylesheet" href="<?= baseUrl('assets/css/typifications.css') ?>">
     <link rel="stylesheet" href="<?= baseUrl('assets/css/advisor.css') ?>">
 </head>
 <body>
@@ -191,30 +193,107 @@
                                     <!-- Canales Autorizados -->
                                     <div class="mb-3" id="channels-field" style="display: none;">
                                         <label class="form-label">Canales Autorizados</label>
-                            <div class="row">
+                                        <div class="row">
                                             <div class="col-md-6">
-                                                <label class="form-label small">Canales Disponibles:</label>
-                                                <select class="form-select" id="available_channels" multiple size="4">
-                                                    <?php foreach ($authorized_channels as $channel): ?>
-                                                        <option value="<?= $channel['id'] ?>"><?= htmlspecialchars($channel['name']) ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label small">Canales Seleccionados:</label>
-                                                <select class="form-select" id="selected_channels" name="authorized_channels[]" multiple size="4">
-                                                </select>
-                                                <div class="mt-2">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary" id="add-channel">
-                                                        <i class="fas fa-arrow-right"></i> Agregar
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger" id="remove-channel">
-                                                        <i class="fas fa-arrow-left"></i> Quitar
-                                                    </button>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">Seleccione los canales autorizados:</h6>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="telefono" id="channel_telefono">
+                                                                    <label class="form-check-label" for="channel_telefono">
+                                                                        Teléfono
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="whatsapp" id="channel_whatsapp">
+                                                                    <label class="form-check-label" for="channel_whatsapp">
+                                                                        WhatsApp
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="ivr" id="channel_ivr">
+                                                                    <label class="form-check-label" for="channel_ivr">
+                                                                        IVR
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="sms" id="channel_sms">
+                                                                    <label class="form-check-label" for="channel_sms">
+                                                                        SMS
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="correo" id="channel_correo">
+                                                                    <label class="form-check-label" for="channel_correo">
+                                                                        Correo
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="direccion" id="channel_direccion">
+                                                                    <label class="form-check-label" for="channel_direccion">
+                                                                        Dirección Física
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input channel-checkbox" type="checkbox" value="bot" id="channel_bot">
+                                                                    <label class="form-check-label" for="channel_bot">
+                                                                        BOT
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                </div>
-                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">Información específica de canales:</h6>
+                                                        
+                                                        <!-- Teléfono Autorizado -->
+                                                        <div class="mb-3" id="telefono-field" style="display: none;">
+                                                            <label for="telefono_autorizado" class="form-label">Teléfono Autorizado:</label>
+                                                            <input type="text" class="form-control" id="telefono_autorizado" name="telefono_autorizado" placeholder="Ingrese el número de teléfono autorizado">
+                                                        </div>
+                                                        
+                                                        <!-- BOT Autorizado -->
+                                                        <div class="mb-3" id="bot-field" style="display: none;">
+                                                            <label for="bot_autorizado" class="form-label">BOT Autorizado:</label>
+                                                            <input type="text" class="form-control" id="bot_autorizado" name="bot_autorizado" placeholder="Ingrese información del BOT autorizado">
+                                                        </div>
+                                                        
+                                                        <!-- SMS Autorizado -->
+                                                        <div class="mb-3" id="sms-field" style="display: none;">
+                                                            <label for="sms_autorizado" class="form-label">SMS Autorizado:</label>
+                                                            <input type="text" class="form-control" id="sms_autorizado" name="sms_autorizado" placeholder="Ingrese información del SMS autorizado">
+                                                        </div>
+                                                        
+                                                        <!-- Correo Autorizado -->
+                                                        <div class="mb-3" id="correo-field" style="display: none;">
+                                                            <label for="correo_autorizado" class="form-label">Correo Autorizado:</label>
+                                                            <input type="email" class="form-control" id="correo_autorizado" name="correo_autorizado" placeholder="Ingrese el correo autorizado">
+                                                        </div>
+                                                        
+                                                        <!-- Dirección Autorizada -->
+                                                        <div class="mb-3" id="direccion-field" style="display: none;">
+                                                            <label for="direccion_autorizada" class="form-label">Dirección Autorizada:</label>
+                                                            <textarea class="form-control" id="direccion_autorizada" name="direccion_autorizada" rows="2" placeholder="Ingrese la dirección física autorizada"></textarea>
+                                                        </div>
+                                                        
+                                                        <!-- WhatsApp Autorizado -->
+                                                        <div class="mb-3" id="whatsapp-field" style="display: none;">
+                                                            <label for="whatsapp_autorizado" class="form-label">WhatsApp Autorizado:</label>
+                                                            <input type="text" class="form-control" id="whatsapp_autorizado" name="whatsapp_autorizado" placeholder="Ingrese el número de WhatsApp autorizado">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             
                                     <!-- Marco de Obligación -->
                                     <div class="mb-3" id="obligation-field" style="display: none;">
@@ -243,36 +322,47 @@
                                                 <div class="obligation-template" style="display: none;">
                                                     <div class="obligation-item border rounded p-3 mb-3">
                                                         <div class="row g-3">
-                                                            <div class="col-md-3">
+                                                            <!-- Sección Cuenta -->
+                                                            <div class="col-md-3 obligation-field obligation-field-account">
                                                                 <label class="form-label small">Cuenta</label>
                                                                 <select class="form-select form-select-sm" name="obligation_account[]" required>
                                                                     <option value="">Seleccione</option>
                                                                     <!-- Se llenará dinámicamente -->
                                                                 </select>
                                                             </div>
-                                                            <div class="col-md-3">
+                                                            
+                                                            <!-- Sección Fecha Pago -->
+                                                            <div class="col-md-3 obligation-field obligation-field-date">
                                                                 <label class="form-label small">Fecha Pago</label>
                                                                 <input type="date" class="form-control form-control-sm" name="obligation_payment_date[]" required>
                                                             </div>
-                                                            <div class="col-md-2">
+                                                            
+                                                            <!-- Sección Cuotas -->
+                                                            <div class="col-md-2 obligation-field obligation-field-installments">
                                                                 <label class="form-label small">Cuotas</label>
                                                                 <input type="number" class="form-control form-control-sm" name="obligation_total_installments[]" min="1" required>
                                                             </div>
-                                                            <div class="col-md-2">
+                                                            
+                                                            <!-- Sección Valor Total -->
+                                                            <div class="col-md-2 obligation-field obligation-field-total">
                                                                 <label class="form-label small">Valor Total Acuerdo</label>
                                                                 <div class="input-group input-group-sm">
-                                        <span class="input-group-text">$</span>
+                                                                    <span class="input-group-text">$</span>
                                                                     <input type="text" class="form-control obligation-total-value" name="obligation_total_value[]" placeholder="0" required>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            
+                                                            <!-- Sección Número Cuota -->
+                                                            <div class="col-md-1 obligation-field obligation-field-number">
                                                                 <label class="form-label small">Número Cuota</label>
                                                                 <input type="number" class="form-control form-control-sm" name="obligation_installment_number[]" min="1" required>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            
+                                                            <!-- Sección Valor Cuota -->
+                                                            <div class="col-md-1 obligation-field obligation-field-value">
                                                                 <label class="form-label small">Valor Cuota</label>
                                                                 <div class="input-group input-group-sm">
-                                        <span class="input-group-text">$</span>
+                                                                    <span class="input-group-text">$</span>
                                                                     <input type="text" class="form-control obligation-installment-value" name="obligation_installment_value[]" placeholder="0" required>
                                                                 </div>
                                                             </div>
@@ -496,23 +586,19 @@
                 }
             });
             
-            // Manejar canales autorizados
-            $('#add-channel').click(function() {
-                const selected = $('#available_channels option:selected');
-                selected.each(function() {
-                    const option = $(this);
-                    const value = option.val();
-                    const text = option.text();
-                    
-                    // Verificar si ya existe
-                    if ($('#selected_channels option[value="' + value + '"]').length == 0) {
-                        $('#selected_channels').append(`<option value="${value}">${text}</option>`);
-                    }
-                });
-            });
-            
-            $('#remove-channel').click(function() {
-                $('#selected_channels option:selected').remove();
+            // Manejar canales autorizados con checkboxes
+            $('.channel-checkbox').change(function() {
+                const channelType = $(this).val();
+                const isChecked = $(this).is(':checked');
+                const fieldId = channelType + '-field';
+                
+                if (isChecked) {
+                    $('#' + fieldId).show();
+                } else {
+                    $('#' + fieldId).hide();
+                    // Limpiar el campo cuando se deselecciona
+                    $('#' + fieldId + ' input, #' + fieldId + ' textarea').val('');
+                }
             });
             
             // Funcionalidad del formulario de obligaciones
@@ -653,10 +739,26 @@
                     return false;
                 }
                 
-                if (selectedProfile.data('requires-channels') == 1 && $('#selected_channels option').length == 0) {
-                    e.preventDefault();
-                    alert('Debe seleccionar al menos un canal autorizado.');
-                    return false;
+                if (selectedProfile.data('requires-channels') == 1) {
+                    const checkedChannels = $('.channel-checkbox:checked');
+                    if (checkedChannels.length == 0) {
+                        e.preventDefault();
+                        alert('Debe seleccionar al menos un canal autorizado.');
+                        return false;
+                    }
+                    
+                    // Validar que los campos específicos estén llenos si el canal está seleccionado
+                    checkedChannels.each(function() {
+                        const channelType = $(this).val();
+                        const fieldId = channelType + '-field';
+                        const inputField = $('#' + fieldId + ' input, #' + fieldId + ' textarea');
+                        
+                        if (inputField.length > 0 && !inputField.val().trim()) {
+                            e.preventDefault();
+                            alert(`Debe completar la información del canal ${$(this).next('label').text().trim()}.`);
+                            return false;
+                        }
+                    });
                 }
                 
                 if (selectedProfile.data('requires-obligation') == 1 && !$('#obligation_frame').val().trim()) {

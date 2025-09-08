@@ -36,7 +36,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="<?= baseUrl('advisor/my-accounts') ?>">
-                            <i class="fas fa-file-invoice me-1"></i>Mis Cuentas
+                            <i class="fas fa-file-invoice me-1"></i>Mis clientes
                         </a>
                     </li>
                     <li class="nav-item">

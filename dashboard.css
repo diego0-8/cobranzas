@@ -19,6 +19,28 @@ body {
     font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Sidebar */
+.sidebar {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.sidebar .nav-link {
+    color: rgba(255,255,255,0.8);
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: white;
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Contenido principal */
+.main-content {
+    background-color: #f8f9fa;
+}
+
 /* Navbar personalizada */
 .navbar-brand {
     font-weight: 800;
@@ -39,8 +61,9 @@ body {
 .card {
     border: none;
     border-radius: 0.35rem;
-    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
 }
 
 .card:hover {
@@ -71,6 +94,27 @@ body {
 
 .border-left-secondary {
     border-left: 0.25rem solid var(--secondary-color) !important;
+}
+
+/* Efectos hover para bordes */
+.card.border-left-primary:hover {
+    border-left-color: #2e59d9 !important;
+}
+
+.card.border-left-success:hover {
+    border-left-color: #17a673 !important;
+}
+
+.card.border-left-info:hover {
+    border-left-color: #2c9faf !important;
+}
+
+.card.border-left-warning:hover {
+    border-left-color: #e0a800 !important;
+}
+
+.card.border-left-danger:hover {
+    border-left-color: #d1a3a3 !important;
 }
 
 /* Texto de las tarjetas */
@@ -129,17 +173,92 @@ body {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
 /* Header del dashboard */
 .h3 {
     font-weight: 700;
     color: var(--dark-color);
 }
 
-/* Badges */
+/* Badges personalizados */
 .badge {
-    font-size: 0.75rem;
+    font-size: 0.75em;
     font-weight: 600;
 }
+
+/* Formularios */
+.form-control:focus {
+    border-color: #bac8f3;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.form-select:focus {
+    border-color: #bac8f3;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+/* Alertas personalizadas */
+.alert {
+    border: none;
+    border-radius: 0.35rem;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Tablas */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.table-responsive {
+    border-radius: 0.35rem;
+}
+
+/* Botones de acción */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -168,9 +287,6 @@ body {
     }
 }
 
-.card {
-    animation: fadeInUp 0.6s ease-out;
-}
 
 /* Efectos hover para las tarjetas de estadísticas */
 .card.border-left-primary:hover {

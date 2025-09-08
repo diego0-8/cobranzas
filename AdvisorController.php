@@ -73,8 +73,25 @@ class AdvisorController extends Controller {
             $notes = $this->getPost('notes');
             $phone_number = $this->getPost('phone_number');
             $scheduled_date = $this->getPost('scheduled_date');
-            $authorized_channels = $this->getPost('authorized_channels', []);
             $obligation_frame = $this->getPost('obligation_frame');
+            
+            // Obtener datos específicos de canales autorizados
+            $telefono_autorizado = $this->getPost('telefono_autorizado');
+            $whatsapp_autorizado = $this->getPost('whatsapp_autorizado');
+            $correo_autorizado = $this->getPost('correo_autorizado');
+            $direccion_autorizada = $this->getPost('direccion_autorizada');
+            $bot_autorizado = $this->getPost('bot_autorizado');
+            $sms_autorizado = $this->getPost('sms_autorizado');
+            
+            // Preparar datos de canales autorizados
+            $authorized_channels_data = [
+                'telefono' => $telefono_autorizado,
+                'whatsapp' => $whatsapp_autorizado,
+                'correo' => $correo_autorizado,
+                'direccion' => $direccion_autorizada,
+                'bot' => $bot_autorizado,
+                'sms' => $sms_autorizado
+            ];
             
             // Obtener datos de obligaciones
             $obligation_accounts = $this->getPost('obligation_account', []);
@@ -108,7 +125,7 @@ class AdvisorController extends Controller {
                 'notes' => $notes,
                 'phone_number' => $phone_number,
                 'scheduled_date' => $scheduled_date,
-                'authorized_channels_data' => json_encode($authorized_channels),
+                'authorized_channels_data' => json_encode($authorized_channels_data),
                 'obligation_frame_data' => $obligation_frame,
                 'promise_amount' => null,
                 'promise_due_date' => null,
